@@ -193,6 +193,15 @@ const ProjectCard = ({ project }) => (
           <span key={tag} className="bg-slate-700 text-teal-300 text-xs font-semibold px-2.5 py-1 rounded-full">{tag}</span>
         ))}
       </div>
+
+      <div className='flex'>
+        <div className='border-b-blue-950 rounded-b-sm p-2 bg-gray-700 font-medium mr-2'>
+        <a href={project.liveUrl}>Check live</a>
+        </div>
+      <div className='border-b-blue-950 rounded-b-sm p-2 bg-gray-700 font-medium mr-2'>
+        <a href={project.repoUrl}>Check Code</a>
+      </div>
+      </div>
     </div>
   </div>
 );

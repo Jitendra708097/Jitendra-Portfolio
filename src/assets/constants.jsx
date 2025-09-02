@@ -80,12 +80,12 @@ export const PROJECTS_DATA = [
         repoUrl: '#',
     },
     {
-        title: 'To-Do List',
-        description: 'A classic to-do list application to manage tasks, featuring create, read, update, and delete (CRUD) functionalities with persistent state.',
-        tags: ['React.js', 'State Management', 'HTML/CSS'],
-        imageUrl: 'https://picsum.photos/seed/todo/1000/800',
-        liveUrl: '#',
-        repoUrl: '#',
+        title: 'Tic-Tac-Toe',
+        description: 'A classic Tic Tac Toe game.',
+        tags: ['Java Script',"API Integration", 'HTML/CSS'],
+        imageUrl: 'https://play-lh.googleusercontent.com/zPxLgj5nvl20ahJV7aFC6S5mD8kii5CEEDj25j1P9CYAfXL9sdDuO-8eES0r4DhJHrU',
+        liveUrl: 'https://jitendra708097.github.io/TicTacToe.github.io/',
+        repoUrl: 'https://github.com/Jitendra708097/TicTacToe.github.io',
     },
 ];
 
