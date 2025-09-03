@@ -188,7 +188,28 @@ export const CODER_ARMY = [
   url: 'https://www.youtube.com/@CoderArmy9',
   icon: <BookOpenIcon className="w-12 h-12 text-red-900" />
  },
-]
+];
+
+export const RESOURCES_DATABASE = [
+  {
+    title: 'MongoDB Official Docs',
+    description: 'Discover how to leverage MongoDB to streamline development for the next generation of AI-powered applications.',
+    url: 'https://www.mongodb.com/?msockid=26aca4a07ca3617e3785b76e7da56049',
+    icon: <BookOpenIcon className="w-12 h-12 text-green-500" />,
+  },
+  {
+    title: 'Mongoose Official Docs',
+    description: 'Mongoose provides a straight-forward, schema-based solution to model your application data. It includes built-in type casting, validation, query building, business logic hooks and more, out of the box.',
+    url: 'https://mongoosejs.com/',
+    icon: <BookOpenIcon className="w-12 h-12 text-red-900" />,
+  },
+  {
+    title: 'Redish Official Docs',
+    description: 'Redis is a fast, in-memory data store ideal for caching, real-time analytics, and messaging.',
+    url: 'https://redis.io/',
+    icon: <BookOpenIcon className="w-12 h-12 text-amber-50" />,
+  },
+];
 
 export const GALLERY_DATA = [
     {

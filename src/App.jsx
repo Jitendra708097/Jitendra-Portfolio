@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { SKILLS_DATA, PROJECTS_DATA, RESOURCES_DATA_FRONTED,RESOURCES_DATA_BACKEND,CODER_ARMY, GALLERY_DATA } from './assets/constants';
+import { SKILLS_DATA, PROJECTS_DATA, RESOURCES_DATA_FRONTED,RESOURCES_DATA_BACKEND,CODER_ARMY, RESOURCES_DATABASE, GALLERY_DATA } from './assets/constants';
 
 const Section = ({ id, title, children, className = '' }) => (
   <section id={id} className={`py-20 px-4 sm:px-6 lg:px-8 w-full max-w-7xl mx-auto ${className}`}>
@@ -253,6 +253,15 @@ const ResourcesPage = () => (
     <Section id="resources" title="Backend Learning Resources">
         <div className="grid md:grid-cols-2 gap-8">
             {RESOURCES_DATA_BACKEND.map(resource => (
+                <ResourceCard key={resource.title} resource={resource} />
+            ))}
+        </div>
+    </Section>
+
+    {/* Database learning resources  */}
+    <Section id="resources" title="Database Learning Resources">
+        <div className="grid md:grid-cols-2 gap-8">
+            {RESOURCES_DATABASE.map(resource => (
                 <ResourceCard key={resource.title} resource={resource} />
             ))}
         </div>
