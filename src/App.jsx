@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import resumePdf from './assets/my_resume.pdf';
 import { SKILLS_DATA, PROJECTS_DATA, RESOURCES_DATA_FRONTED,RESOURCES_DATA_BACKEND,CODER_ARMY, RESOURCES_DATABASE, GALLERY_DATA } from './assets/constants';
 
 const Section = ({ id, title, children, className = '' }) => (
@@ -151,6 +152,26 @@ const HomePage = ({ onNavigate }) => {
                     <button onClick={() => onNavigate('contact')} className="bg-slate-700 hover:bg-slate-600 text-white font-bold py-3 px-8 rounded-full transition-transform transform hover:scale-105 duration-300">
                         Get In Touch
                     </button>
+                    
+                    {/* Resume functionality you download or view my resume  */}
+                    <div className="mt-12 flex justify-center space-x-4">
+                      <a
+                        href={resumePdf}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-slate-600 hover:bg-indigo-700"
+                      >
+                        View Resume
+                      </a>
+
+                      <a
+                        href={resumePdf}
+                        download="Your_Name_Resume.pdf"
+                        className="px-6 py-3 border border-transparent text-base font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200"
+                      >
+                        Download Resume
+                      </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -302,24 +323,206 @@ const GalleryPage = ({ onImageClick }) => (
     </Section>
 );
 
-const ContactPage = () => (
+const ContactPage = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: ''
+  });
+  const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+    
+    // Clear error when user types
+    if (errors[name]) {
+      setErrors(prev => ({
+        ...prev,
+        [name]: ''
+      }));
+    }
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+    
+    if (!formData.name.trim()) newErrors.name = 'Name is required';
+    if (!formData.email.trim()) {
+      newErrors.email = 'Email is required';
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = 'Email is invalid';
+    }
+    if (!formData.subject.trim()) newErrors.subject = 'Subject is required';
+    if (!formData.message.trim()) newErrors.message = 'Message is required';
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async(e) => {
+    e.preventDefault();
+     
+    if (validateForm()) {
+      setIsSubmitting(true);
+      
+      // Simulate form submission
+      setTimeout(() => {
+        console.log('Form submitted:', formData);
+        setIsSubmitting(false);
+        setIsSubmitted(true);
+        
+        // Reset form after successful submission
+        setFormData({
+          name: '',
+          email: '',
+          subject: '',
+          message: ''
+        });
+      }, 1500);
+    }
+  };
+
+  if (isSubmitted) {
+    return (
+      <div className="max-w-lg mx-auto p-6 bg-slate-900 rounded-lg border border-green-200 shadow-md">
+        <div className="flex flex-col items-center text-center">
+          <svg className="w-16 h-16 text-green-500 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          <h3 className="text-2xl font-bold text-green-800 mb-2">Message Sent!</h3>
+          <p className="text-green-600 mb-4">Thank you for reaching out. I'll get back to you as soon as possible.</p>
+          <button 
+            onClick={() => setIsSubmitted(false)}
+            className="px-6 py-2 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors"
+          >
+            Send Another Message
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <>
+
     <Section id="contact" title="Get In Touch">
         <div className="text-center max-w-2xl mx-auto">
             <p className="text-slate-300 mb-8 text-lg">
                 I'm currently seeking new opportunities and am open to collaboration. Feel free to reach out via email or connect with me on social media.
             </p>
-            <div className="bg-slate-800/50 rounded-lg p-8 inline-block">
-                <a href="mailto:jitendrasharma708097@gmail.com" className="text-2xl font-semibold text-teal-400 hover:text-teal-300 transition-colors duration-300">
+            <div className="bg-slate-800/50 rounded-lg p-8 flex-wrap">
+                <a href="mailto:jitendrasharma708097@gmail.com" className="text-2xl font-semibold text-teal-400 hover:text-teal-300 transition-colors duration-300 flex-wrap">
                     jitendrasharma708097@gmail.com
                 </a>
             </div>
             <div className="mt-10 flex justify-center space-x-6">
-                <a href="#" className="text-slate-400 hover:text-teal-400 transition-colors"><svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fillRule="evenodd" d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.165 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.014-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.031-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.203 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.338 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.001 10.001 0 0022 12c0-5.523-4.477-10-10-10z" clipRule="evenodd" /></svg></a>
-                <a href="#" className="text-slate-400 hover:text-teal-400 transition-colors"><svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg></a>
+                <a href="https://github.com/Jitendra708097?tab=repositories" className="text-slate-400 hover:text-teal-400 transition-colors"><svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fillRule="evenodd" d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.165 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.014-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.031-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.203 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.338 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.001 10.001 0 0022 12c0-5.523-4.477-10-10-10z" clipRule="evenodd" /></svg></a>
+                <a href="https://www.linkedin.com/in/jitendra-sharma-998690268/"className="text-slate-400 hover:text-teal-400 transition-colors"><svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg></a>
             </div>
         </div>
     </Section>
-);
+
+    <section className="py-12 px-4 bg-slate-900">
+      <div className="max-w-4xl mx-auto">
+        <div className="text-center mb-12">
+          <p className="text-lg text-slate-300 max-w-2xl mx-auto">
+            Have a project in mind or want to discuss opportunities? Feel free to reach out using the form below.
+          </p>
+        </div>
+        
+        {/* contact form page */}
+        <form action="https://formsubmit.io/send/jitendrasharma708097@gmail.com" 
+              method="POST" 
+              onSubmit={handleSubmit} 
+              className="rounded-xl shadow-lg p-6 md:p-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div>
+              <label htmlFor="name" className="block text-sm font-medium text-gray-400 mb-2">Your Name</label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                className={`w-full px-4 py-3 rounded-lg border ${errors.name ? 'border-red-500' : 'border-gray-300'} focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
+                placeholder="John Doe"
+              />
+              {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name}</p>}
+            </div>
+            
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-gray-400 mb-2">Email Address</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                className={`w-full px-4 py-3 rounded-lg border ${errors.email ? 'border-red-500' : 'border-gray-300'} focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
+                placeholder="john@example.com"
+              />
+              {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email}</p>}
+            </div>
+          </div>
+          
+          <div className="mb-6">
+            <label htmlFor="subject" className="block text-sm font-medium text-gray-400 mb-2">Subject</label>
+            <input
+              type="text"
+              id="subject"
+              name="subject"
+              value={formData.subject}
+              onChange={handleChange}
+              className={`w-full px-4 py-3 rounded-lg border ${errors.subject ? 'border-red-500' : 'border-gray-300'} focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
+              placeholder="Project Collaboration"
+            />
+            {errors.subject && <p className="mt-1 text-sm text-red-600">{errors.subject}</p>}
+          </div>
+          
+          <div className="mb-6">
+            <label htmlFor="message" className="block text-sm font-medium text-gray-400 mb-2">Your Message</label>
+            <textarea
+              id="message"
+              name="message"
+              value={formData.message}
+              onChange={handleChange}
+              rows="5"
+              className={`w-full px-4 py-3 rounded-lg border ${errors.message ? 'border-red-500' : 'border-gray-300'} focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
+              placeholder="Tell me about your project or inquiry..."
+            ></textarea>
+            {errors.message && <p className="mt-1 text-sm text-red-600">{errors.message}</p>}
+          </div>
+          
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="w-full py-3 px-6 bg-slate-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors flex items-center justify-center"
+          >
+            {isSubmitting ? (
+              <>
+                <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Sending...
+              </>
+            ) : (
+              'Send Message'
+            )}
+          </button>
+        </form>
+      </div>
+    </section>
+    </>
+  );
+};
 
 // --- MAIN APP COMPONENT ---
 
